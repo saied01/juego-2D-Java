@@ -32,8 +32,29 @@ public class panelJuego extends JPanel implements Runnable{
 
     @Override
     public void run(){
-
         // loop del juego
+        while (thread != null) {
 
+            //System.out.println("thread running");
+
+            //1 ACTUALIZAR la informacion como la posicion del personaje
+            actualizar();
+
+            //2 DIBUJAR la ventana con la informacion actualizada
+            repaint(); // llamamos a paintComponent con esto (no se por que)
+        }
+    }
+
+    public void actualizar() {
+    }
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g); // formato para pintar usando JPanel cada vez. super = funcion padre de JPanel
+
+        Graphics2D g2 = (Graphics2D) g; // transformamos a g en graficos 2D
+
+        g2.setColor(Color.WHITE);
+
+        g2.fillRect(220, 220, tileSize, tileSize);
+        g2.dispose();
     }
 }
