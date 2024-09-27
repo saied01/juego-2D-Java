@@ -1,5 +1,7 @@
 package Main;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public class gamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16; // 16x16 bits
     final int scale = 3; // escalamos los 16 bits a 48 (16*3) porque la resolucion de los monitores es muy grande
 
-    final int tileSize = originalTileSize * scale; // 48x48
+    public final int tileSize = originalTileSize * scale; // 48x48
     final int maxColScreen = 16;
     final int maxRowScreen = 12;
     final int screenWidth = maxColScreen * tileSize; // 768 pixeles
@@ -20,6 +22,7 @@ public class gamePanel extends JPanel implements Runnable{
 
     Thread thread; // es como un timer del juego que hace que el juego no se pare en ningun momento
     keyHandler keyH = new keyHandler();
+    Player player = new Player(this, keyH);
 
     int playerX = 100;
     int playerY = 100;
@@ -72,28 +75,15 @@ public class gamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-
-        if (keyH.upPress) {
-            playerY -= playerSpeed;
-        }
-        if (keyH.downPress) {
-            playerY += playerSpeed;
-        }
-        if (keyH.leftPress) {
-            playerX -= playerSpeed;
-        }
-        if (keyH.rightPress) {
-            playerX += playerSpeed;
-        }
+        player.update();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // formato para pintar usando JPanel cada vez. super = funcion padre de JPanel
 
         Graphics2D g2 = (Graphics2D) g; // transformamos a g en graficos 2D
 
-        g2.setColor(Color.WHITE);
+        player.draw(g2);
 
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
         g2.dispose();
     }
 }
