@@ -50,9 +50,8 @@ public class TileManager {
                     col = 0;
                     row++;
                 }
-                br.close();
             }
-
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,7 +68,9 @@ public class TileManager {
             tiles[1] = new Tile();
             tiles[1].image = getSubImage(420,10,48,48);
             tiles[2] = new Tile();
-            tiles[2].image = getSubImage(140,10,48,48);
+            tiles[2].image = getSubImage(30,10,48,48);
+            tiles[3] = new Tile();
+            tiles[3].image = getSubImage(80,10,48,48);
 
         } catch (IOException e) {
             e.printStackTrace();
