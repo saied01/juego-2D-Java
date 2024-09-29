@@ -4,20 +4,58 @@ import Main.gamePanel;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class TileManager {
 
     private BufferedImage spriteSheet;
     gamePanel gp;
     Tile[] tiles;
+    int mapTileNum[][];
 
     public TileManager(gamePanel gp) {
 
         this.gp = gp;
 
         tiles = new Tile[10];
+        mapTileNum = new int[gp.maxColScreen][gp.maxRowScreen];
+
         getTileImage();
+        loadMap();
+    }
+
+    public void loadMap() {
+        try {
+            InputStream is = getClass().getResourceAsStream("/maps/map.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            int row = 0;
+            int col = 0;
+
+            while (col < gp.maxColScreen && row < gp.maxRowScreen) {
+                String line = br.readLine();
+
+                while (col < gp.maxColScreen) {
+
+                    String numbers[] = line.split(" ");
+                    int num = Integer.parseInt(numbers[col]);
+
+                    mapTileNum[col][row] = num;
+                    col++;
+                }
+                if (col == gp.maxColScreen) {
+                    col = 0;
+                    row++;
+                }
+                br.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getTileImage() {
@@ -50,7 +88,10 @@ public class TileManager {
         int y = 0;
 
         while (col < gp.maxColScreen && row < gp.maxRowScreen) {
-            g2.drawImage(tiles[0].image, x, y,gp.tileSize,gp.tileSize,null);
+
+            int tileNum = mapTileNum[col][row];
+
+            g2.drawImage(tiles[tileNum].image, x, y,gp.tileSize,gp.tileSize,null);
             col++;
             x += gp.tileSize;
 
